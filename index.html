@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Will You Go On A Date With Me? Susila❤️</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    html, body {
+      margin: 0;
+      min-height: 100%;
+    }
+
+    body {
+      font-family: "Trebuchet MS", Arial, sans-serif;
+      background: #17172b;
+      overflow-x: hidden;
+    }
+
+    .page {
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      padding: 20px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /*
+      The generated anime artwork is used as the visual background.
+      Put generated-image.png in the same folder as index.html.
+    */
+    .art {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center;
+  background: #17172b;
+  z-index: 0;
+}
+@media (max-width: 700px) {
+  .art {
+    object-fit: cover;
+    object-position: 50% 35%;
+  }
+}
+    .shade {
+      position: fixed;
+      inset: 0;
+      z-index: 1;
+      background:
+        linear-gradient(
+          180deg,
+          rgba(20, 14, 38, 0.08),
+          rgba(20, 10, 28, 0.22)
+        );
+      pointer-events: none;
+    }
+
+    .content {
+      position: relative;
+      z-index: 2;
+      width: min(520px, 92vw);
+      text-align: center;
+      margin-top: 48vh;
+    }
+
+    .question {
+      display: inline-block;
+      padding: 13px 20px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.88);
+      color: #4a2638;
+      font-weight: 700;
+      box-shadow: 0 10px 30px rgba(0,0,0,.18);
+      margin-bottom: 14px;
+    }
+
+    .buttons {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+
+    button {
+      border: 0;
+      cursor: pointer;
+      font: inherit;
+      font-weight: 800;
+      border-radius: 999px;
+      padding: 15px 27px;
+      transition:
+        transform .18s ease,
+        box-shadow .18s ease,
+        left .2s ease,
+        top .2s ease;
+    }
+
+    #yes {
+      color: white;
+      background: linear-gradient(135deg, #ff4f83, #ff739d);
+      box-shadow: 0 12px 30px rgba(255, 79, 131, .45);
+    }
+
+    #yes:hover {
+      transform: translateY(-4px) scale(1.04);
+    }
+
+    #no {
+      color: #493a50;
+      background: rgba(255,255,255,.9);
+      box-shadow: 0 10px 25px rgba(0,0,0,.15);
+    }
+
+    #no.runaway {
+      position: fixed;
+      z-index: 10;
+    }
+
+    .message {
+      display: none;
+      margin-top: 18px;
+      padding: 18px 22px;
+      border-radius: 22px;
+      background: rgba(255,255,255,.94);
+      color: #4a2638;
+      font-size: 1.15rem;
+      font-weight: 700;
+      box-shadow: 0 15px 40px rgba(0,0,0,.2);
+      animation: pop .45s ease both;
+    }
+
+    .message.show {
+      display: block;
+    }
+
+    .heart {
+      position: fixed;
+      bottom: -30px;
+      z-index: 3;
+      pointer-events: none;
+      animation: floatUp linear forwards;
+    }
+
+    @keyframes floatUp {
+      from {
+        transform: translateY(0) rotate(0deg);
+        opacity: 1;
+      }
+      to {
+        transform: translateY(-110vh) rotate(25deg);
+        opacity: 0;
+      }
+    }
+
+    @keyframes pop {
+      from {
+        opacity: 0;
+        transform: scale(.75);
+      }
+      to {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+
+    @media (max-width: 700px) {
+      .art {
+        object-position: 52% center;
+      }
+
+      .content {
+        margin-top: 55vh;
+      }
+
+      .question {
+        font-size: .9rem;
+      }
+
+      button {
+        padding: 13px 21px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <main class="page">
+
+    <!-- Replace this image with your own artwork if you want -->
+    <img
+      class="art"
+      src="generated-image.png"
+      alt="Anime date invitation"
+    >
+
+    <div class="shade"></div>
+
+    <section class="content">
+
+      <div class="question">
+        Sooo... what do you say? 👉👈 Susila
+      </div>
+
+      <div class="buttons">
+        <button id="yes">Yes, I will ❤️</button>
+        <button id="no">No 😭</button>
+      </div>
+
+      <div id="message" class="message"></div>
+
+    </section>
+  </main>
+
+  <script>
+    const yesButton = document.getElementById("yes");
+    const noButton = document.getElementById("no");
+    const message = document.getElementById("message");
+
+    // YES button
+    yesButton.addEventListener("click", () => {
+      message.innerHTML = `
+        🥹❤️ YAYYYYY!!!
+        <br><br>
+        It's officially a date!
+        <br>
+        Now you can't escape... 😌✨
+      `;
+
+      message.classList.add("show");
+
+      noButton.style.display = "none";
+
+      createHearts(30);
+    });
+
+    // Funny runaway NO button
+    noButton.addEventListener("mouseenter", moveNoButton);
+
+    // Also works nicely on phones
+    noButton.addEventListener("touchstart", (event) => {
+      event.preventDefault();
+      moveNoButton();
+    });
+
+    function moveNoButton() {
+      noButton.classList.add("runaway");
+
+      const padding = 20;
+      const maxX = window.innerWidth - noButton.offsetWidth - padding;
+      const maxY = window.innerHeight - noButton.offsetHeight - padding;
+
+      const x = Math.max(
+        padding,
+        Math.floor(Math.random() * maxX)
+      );
+
+      const y = Math.max(
+        padding,
+        Math.floor(Math.random() * maxY)
+      );
+
+      noButton.style.left = x + "px";
+      noButton.style.top = y + "px";
+    }
+
+    function createHearts(count) {
+      for (let i = 0; i < count; i++) {
+        setTimeout(() => {
+          const heart = document.createElement("div");
+
+          heart.className = "heart";
+          heart.textContent =
+            ["❤️", "💗", "💕", "💖", "✨", "🌸"][Math.floor(Math.random() * 6)];
+
+          heart.style.left = Math.random() * 100 + "vw";
+          heart.style.fontSize = (18 + Math.random() * 25) + "px";
+          heart.style.animationDuration = (3 + Math.random() * 4) + "s";
+
+          document.body.appendChild(heart);
+
+          setTimeout(() => heart.remove(), 8000);
+        }, i * 70);
+      }
+    }
+  </script>
+
+</body>
+</html>
